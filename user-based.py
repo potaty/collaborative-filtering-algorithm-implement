@@ -23,6 +23,7 @@ for data in real_data:
 sim = {}
 for i in xrange(1, USER_COUNT):
     sim[i] = {}
+    user_total_rating[i] = user_total_rating[i] / user_count[i]
 count = 0
 
 for i in xrange(1, 6041):
@@ -34,9 +35,9 @@ for i in xrange(1, 6041):
         fm2 = 0.0
         for k in xrange(1, 3953):
             if (rating[k].get(i) != None and rating[k].get(j) != None):
-                fz = fz + (1.0 * rating[k][i] - user_total_rating[i] / user_count[i]) * (1.0 * rating[k][j] - user_total_rating[j] / user_count[j])
-                fm1 = fm1 + (1.0 * rating[k][i] - user_total_rating[i] / user_count[i]) ** 2
-                fm2 = fm2 + (1.0 * rating[k][j] - user_total_rating[j] / user_count[j]) ** 2
+                fz = fz + (1.0 * rating[k][i] - user_total_rating[i]) * (1.0 * rating[k][j] - user_total_rating[j])
+                fm1 = fm1 + (1.0 * rating[k][i] - user_total_rating[i]) ** 2
+                fm2 = fm2 + (1.0 * rating[k][j] - user_total_rating[j]) ** 2
         if (fm1 < 1e-10 or fm2 < 1e-10):
             sim[i][j] = 0.0
         else:
@@ -45,7 +46,7 @@ total = 0.0
 
 for data in future_data:
     user = int(data[0])
-    future = user_total_rating[user] / user_count[user]
+    future = user_total_rating[user]
     fz = 0.0
     fm = 0.0
     movie = int(data[1])
