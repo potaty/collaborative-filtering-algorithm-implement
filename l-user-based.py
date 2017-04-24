@@ -1,10 +1,10 @@
 import random
 import math
-file = open('ratings.txt', 'r')
+file = open('u.data', 'r')
 count = 0
 data = []
-USER_COUNT = 6040
-MOVIE_COUNT = 3952
+USER_COUNT = 943
+MOVIE_COUNT = 1682
 for line in file:
     data.append(line.split()[:3])
 random.shuffle(data)
@@ -25,11 +25,8 @@ sim = {}
 for i in xrange(1, USER_COUNT + 1):
     sim[i] = {}
     user_total_rating[i] = user_total_rating[i] / user_count[i]
-count = 0
 
 for i in xrange(1, USER_COUNT + 1):
-    print count
-    count = count + 1
     for j in xrange(i + 1, USER_COUNT + 1):
         fz = 0.0
         fm1 = 0.0
