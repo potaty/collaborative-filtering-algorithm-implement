@@ -6,7 +6,7 @@ data = []
 USER_COUNT = 6040
 MOVIE_COUNT = 3952
 for line in file:
-    data.append(line.split()[:3])
+    data.append(line.split('::')[:3])
 random.shuffle(data)
 real_data = data[:int(len(data) * 0.8)]
 future_data = data[int(len(data) * 0.8):]
