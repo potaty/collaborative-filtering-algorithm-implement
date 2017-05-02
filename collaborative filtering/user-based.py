@@ -15,22 +15,40 @@ for i in xrange(1, MOVIE_COUNT + 1):
     rating[i] = {}
 user_total_rating = [0.0] * (USER_COUNT + 1)
 user_count = [0] * (USER_COUNT + 1)
-for data in real_data:
-    # UserID::MovieID::Rating
-    rating[int(data[1])][int(data[0])] = int(data[2])
-    user_total_rating[int(data[0])] = user_total_rating[int(data[0])] + int(data[2])
-    user_count[int(data[0])] = user_count[int(data[0])] + 1
 ### USE USER-BASED
-sim = {}
-for i in xrange(1, USER_COUNT + 1):
-    sim[i] = {}
-    user_total_rating[i] = user_total_rating[i] / user_count[i]
-count = 0
+user_dict = {}
+movie_dict = {}
 
 for i in xrange(1, USER_COUNT + 1):
-    print count
-    count = count + 1
-    for j in xrange(i + 1, USER_COUNT + 1):
+	user_dict[i] = {}
+
+for i in xrange(1, MOVIE_COUNT + 1):
+	movie_dict[i] = {}
+
+for data in real_data:
+    # UserID::MovieID::Rating
+    movie = int(data[1])
+    user = int(data[0])
+    user_dict[user][movie] = 1
+    movie_dict[movie][user] = 1
+    rating[movie][user] = int(data[2])
+    user_total_rating[int(data[0])] = user_total_rating[int(data[0])] + int(data[2])
+    user_count[int(data[0])] = user_count[int(data[0])] + 1
+ 
+sim = {}
+fm1 = {}
+fm2 = {}
+fz = {}
+for i in xrange(1, USER_COUNT + 1):
+    sim[i] = {}
+    fm1[i] = {}
+    fm2[i] = {}
+    fz[i] = {}
+    user_total_rating[i] = user_total_rating[i] / user_count[i]
+
+'''
+for i in xrange(1, USER_COUNT + 1):
+	for j in xrange(i + 1, USER_COUNT + 1):
         fz = 0.0
         fm1 = 0.0
         fm2 = 0.0
@@ -44,6 +62,34 @@ for i in xrange(1, USER_COUNT + 1):
         else:
 			sim[i][j] = fz / math.sqrt(fm1) / math.sqrt(fm2)
 			sim[j][i] = sim[i][j]
+'''
+for i in xrange(1, USER_COUNT + 1):
+	print i
+	for k in user_dict[i].keys():
+		for j in movie_dict[k].keys():
+			if (i >= j):
+				continue
+			x = 1.0 * rating[k][i] - user_total_rating[i]
+			y = 1.0 * rating[k][j] - user_total_rating[j]
+			if (fz[i].get(j) == None):
+				fz[i][j] = 0.0
+			fz[i][j] += x * y
+			if (fm1[i].get(j) == None):
+				fm1[i][j] = 0.0
+			if (fm2[i].get(j) == None):
+				fm2[i][j] = 0.0
+			fm1[i][j] += x ** 2
+			fm2[i][j] += y ** 2
+	
+for i in xrange(1, USER_COUNT + 1):
+	for j in xrange(i + 1, USER_COUNT + 1):
+		if (fm1[i].get(j) == None or fm1[i].get(j) < 1e-10 or fm2[i].get(j) == None or fm2[i].get(j) < 1e-10):
+			sim[i][j] = 0.0
+			sim[j][i] = 0.0
+		else:
+			sim[i][j] = fz[i][j] / math.sqrt(fm1[i][j]) / math.sqrt(fm2[i][j])
+			sim[j][i] = sim[i][j]
+
 total = 0.0
 for data in future_data:
     user = int(data[0])
