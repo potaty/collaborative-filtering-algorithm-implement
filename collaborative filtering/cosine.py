@@ -14,14 +14,14 @@ def cosine(a, b):
 		fz += a[i] * b[i]
 		fm1 += a[i] ** 2
 		fm2 += b[i] ** 2
-	if (fm1 < 1e-10 or fm2 < 1e-10)
+	if (fm1 < 1e-10 or fm2 < 1e-10):
 		return 0.0
 	return fz / math.sqrt(fm1) / math.sqrt(fm2)
 
 def average(v):
 	average_v = 0.0
 	if (max(v) != 0):
-		average_v = sum(v) / map(lambda x: return 1 if x > 0 else 0, enumerate(v))
+		average_v = (1.0 * sum(v)) / sum(map(lambda (x): 1 if x > 0 else 0, v))
 	return average_v
 
 
@@ -38,12 +38,14 @@ def exactly_cosine(a, b):
 	for i in xrange(a_len):
 		if (a[i] == 0 or b[i] == 0):
 			continue
-		x = a[i] - average_a
-		y = b[i] - average_b
+		x = 1.0 * a[i] - average_a
+		y = 1.0 * b[i] - average_b
+		#print x, y
 		fz += x * y
 		fm1 += x ** 2
 		fm2 += y ** 2
-	if (fm1 < 1e-10 or fm2 < 1e-10)
+	if (fm1 < 1e-10 or fm2 < 1e-10):
 		return 0.0
+	#print fm1, fm2, fz
 	return fz / math.sqrt(fm1) / math.sqrt(fm2)
 

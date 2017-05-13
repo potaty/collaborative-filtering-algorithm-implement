@@ -36,18 +36,12 @@ for line in train_data.itertuples():
 	user_dict[line[1] - 1][line[2] - 1] = 1
 	movie_dict[line[2] - 1][line[1] - 1] = 1
 
+
 # calculate similarity
-# user_similarity = np.zeros((n_users, n_users))
-
-for u1 in xrange(n_users):
-	for movie in user_dict[u1].keys():
-		for u2 in movie_dict[movie].keys():
-
+user_similarity = np.zeros((n_users, n_users))
 
 for i in xrange(n_users):
-	print i
 	for j in xrange(n_users):
-		print j
 		user_similarity[i, j] = cosine.exactly_cosine(train_data_matrix[i], train_data_matrix[j])
 
 print user_similarity
@@ -57,8 +51,7 @@ result = 0.0
 
 count = 0
 for line in test_data.itertuples():
-	print count
-	count += 1
+	# print count
 	user, movie, rating = line[1] - 1, line[2] - 1, line[5]
 	similarity = user_similarity[user].copy()
 	median = np.median(similarity)
