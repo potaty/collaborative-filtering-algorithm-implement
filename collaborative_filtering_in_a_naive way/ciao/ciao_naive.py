@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn import model_selection as ms
 from sklearn.metrics.pairwise import cosine_similarity
-import cosine
+import cosine_distance
 from scipy import sparse
 import math 
 import scipy.io

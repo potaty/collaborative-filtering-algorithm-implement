@@ -1,5 +1,6 @@
 import random
 import math
+
 file = open('movielens1m.txt', 'r')
 count = 0
 data = []
